@@ -23,8 +23,8 @@ public class UserInfo {
      * @author yblee
      * @since 2023.03.22
      */
-    public boolean insert(List<String> userInfo) {
-    // public boolean insert(User user) {
+    public boolean insert(User user) {
+        // public boolean insert(User user) {
         boolean flag = true;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
@@ -37,15 +37,14 @@ public class UserInfo {
                         .prepareStatement("INSERT INTO user(id, name, birth, address, job) VALUES (?, ?, ?, ?, ?)");
                 PreparedStatement stmtPhone = con
                         .prepareStatement("INSERT INTO phone(user_id, number) VALUES (?, ?)");) {
-            for (int i = 1; i < 6; i++) {
-                stmtUser.setString(i, userInfo.get(i - 1));
-            }
-            // stmtUser.setString(1, user.getId());
-            // stmtUser.setString(2, user.getName());
-            // ...
+            stmtUser.setString(1, user.getId());
+            stmtUser.setString(2, user.getName());
+            stmtUser.setDate(3, user.getBirth());
+            stmtUser.setString(4, user.getAddress());
+            stmtUser.setString(5, user.getJob());
 
-            stmtPhone.setString(1, userInfo.get(0));
-            stmtPhone.setString(2, userInfo.get(5));
+            stmtPhone.setString(1, user.getId());
+            stmtPhone.setString(2, user.getPhone());
 
             stmtUser.executeUpdate();
             stmtPhone.executeUpdate();
@@ -62,13 +61,13 @@ public class UserInfo {
      * @author yblee
      * @since 2023.03.22
      */
-    public List<String> find(List<String> userInfo) {
-        List<String> userFindInfoList = new ArrayList<>();
+    public List<String> find(String userInfo) {
+        List<String> userInfoFindList = new ArrayList<>();
         StringBuffer userFindInfo = new StringBuffer("SELECT ");
-        if (userInfo.get(0).equals("phone")) {
+        if (userInfo.equals("phone")) {
             userFindInfo.append("number FROM phone ORDER BY user_id");
         } else {
-            userFindInfo.append(userInfo.get(0)).append(" FROM user ORDER BY id");
+            userFindInfo.append(userInfo).append(" FROM user ORDER BY id");
         }
         try {
             Class.forName("org.mariadb.jdbc.Driver");
@@ -80,12 +79,12 @@ public class UserInfo {
                 PreparedStatement stmt = con.prepareStatement(userFindInfo.toString());
                 ResultSet rs = stmt.executeQuery();) {
             while (rs.next()) {
-                userFindInfoList.add(rs.getString(userInfo.get(0)));
+                userInfoFindList.add(rs.getString(userInfo));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userFindInfoList;
+        return userInfoFindList;
     }
 
     /**
@@ -128,7 +127,7 @@ public class UserInfo {
      * @author yblee
      * @since 2023.03.22
      */
-    public boolean delete(String userInfo) {
+    public boolean delete(User user) {
         boolean flag = true;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
@@ -138,7 +137,7 @@ public class UserInfo {
         try (
                 Connection con = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/user_db", "ubin", "0694");
                 PreparedStatement stmt = con.prepareStatement("DELETE FROM user WHERE id = ?");) {
-            stmt.setString(1, userInfo);
+            stmt.setString(1, user.getId());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
