@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 /**
  * 사용자 정보 입력/조회/수정/삭제할지 선택하는 클래스
  * 
@@ -11,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         String num;
         Scanner scan = new Scanner(System.in);
-        UserInfo userInfo = new UserInfo();
+        UserService userInfo = new UserService();
         User user = new User();
         InfoReturn infoReturn = new InfoReturn();
         boolean flag;
@@ -34,24 +35,22 @@ public class Main {
                     infoReturn.returnFlag(flag);
                     break;
                 case 2:
-                    String userFindInfo;
                     List<String> returnUserFind = new ArrayList<>();
                     System.out.print("조회할 정보 선택 ");
                     infoReturn.infoListPrint();
-                    userFindInfo = scan.nextLine();
-                    returnUserFind=userInfo.find(userFindInfo);
+                    returnUserFind = userInfo.find(scan.nextLine());
                     System.out.println(returnUserFind);
                     break;
                 case 3:
-                    List<String> userUpdateInfo = new ArrayList<>();
+                    UserInfoUpdate userInfoUpdate = new UserInfoUpdate();
                     System.out.print("ID : ");
-                    userUpdateInfo.add(scan.nextLine());
+                    userInfoUpdate.setUserId(scan.nextLine());
                     System.out.print("수정 정보 선택 - ");
                     infoReturn.infoListPrint();
-                    userUpdateInfo.add(scan.nextLine());
+                    userInfoUpdate.setUpdateInfo(scan.nextLine());
                     System.out.print("수정 내용 입력 : ");
-                    userUpdateInfo.add(scan.nextLine());
-                    flag = userInfo.update(userUpdateInfo);
+                    userInfoUpdate.setUpdateContent(scan.nextLine());
+                    flag = userInfo.update(userInfoUpdate);
                     infoReturn.returnFlag(flag);
                     break;
                 case 4:

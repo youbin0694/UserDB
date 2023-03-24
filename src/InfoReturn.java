@@ -17,19 +17,19 @@ public class InfoReturn {
             System.out.print(s);
         }
     }
+
     /**
      * 작업이 정상적으로 실행됐는지 출력해주는 함수
      * 
      * @param flag 정상 실행 여부
      * 
+     * 
      * @author yblee
      * @since 2023.03.23
      */
     public void returnFlag(boolean flag) {
-        if (flag == true) {
-            System.out.println("작업을 성공했습니다.");
-        } else {
-            System.out.print("작업을 실패했습니다.");
+        if (flag != true) {
+            System.out.println("작업을 실패했습니다.");
         }
     }
 }
