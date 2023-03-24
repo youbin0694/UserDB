@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// 유저 클래스 정의
 // 전화번호 다중입력.
 // 유효성 검사... (폰,, 생년월일.., 40자의 아이디..)
 
@@ -97,7 +96,7 @@ public class UserInfo {
         boolean flag = true;
         StringBuffer userUpdateInfo = new StringBuffer("UPDATE ");
         if ((userInfo.get(1)).equals("phone")) {
-            userUpdateInfo.append("number SET ").append(userInfo.get(1)).append(" = ? WHERE user_id = ?");
+            userUpdateInfo.append("phone SET ").append(userInfo.get(1)).append(" = ? WHERE user_id = ?");
         } else {
             userUpdateInfo.append("user SET ").append(userInfo.get(1)).append(" = ? WHERE id = ?");
         }

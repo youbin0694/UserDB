@@ -1,7 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * 사용자 정보 입력/조회/수정/삭제할지 선택하는 클래스
+ * 
+ * @author yblee
+ * @since 2023.03.23
+ */
 public class Main {
     public static void main(String[] args) {
         String num;
@@ -34,14 +39,14 @@ public class Main {
                     System.out.print("조회할 정보 선택 ");
                     infoReturn.infoListPrint();
                     userFindInfo = scan.nextLine();
-                    // returnUserFind=find(userFindInfo);
-                    System.out.print(returnUserFind);
+                    returnUserFind=userInfo.find(userFindInfo);
+                    System.out.println(returnUserFind);
                     break;
                 case 3:
                     List<String> userUpdateInfo = new ArrayList<>();
                     System.out.print("ID : ");
                     userUpdateInfo.add(scan.nextLine());
-                    System.out.print("수정 정보 선택 : ");
+                    System.out.print("수정 정보 선택 - ");
                     infoReturn.infoListPrint();
                     userUpdateInfo.add(scan.nextLine());
                     System.out.print("수정 내용 입력 : ");
