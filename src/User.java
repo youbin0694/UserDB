@@ -1,7 +1,6 @@
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -117,8 +116,8 @@ public class User {
      * @since 2023.03.23
      */
     public void setPhone() {
-        phoneList = new ArrayList<>();
-        System.out.print("Phone(다중입력 허용) : ");
+        //phoneList = new ArrayList<>();
+        System.out.println("Phone(다중입력 허용)");
         do {
             System.out.print("입력하세요 : ");
             String phone = isNull();   

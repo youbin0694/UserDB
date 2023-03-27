@@ -36,8 +36,7 @@ public class Main {
                     break;
                 case 2:
                     List<String> returnUserFind = new ArrayList<>();
-                    System.out.print("조회할 정보 선택 ");
-                    infoReturn.infoListPrint();
+                    System.out.print("조회할 ID : ");
                     returnUserFind = userInfo.find(scan.nextLine());
                     System.out.println(returnUserFind);
                     break;

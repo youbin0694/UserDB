@@ -31,7 +31,6 @@ public class UserService {
      * @since 2023.03.23
      */
     public boolean insert(User user) {
-        // public boolean insert(User user) {
         boolean flag = true;
         StringBuffer sqlString = new StringBuffer("INSERT INTO phone(user_id, phone) VALUES (?, ?)");
         if (user.phoneList.size() != 0) {
@@ -55,7 +54,7 @@ public class UserService {
             stmtUser.setDate(3, user.getBirth());
             stmtUser.setString(4, user.getAddress());
             stmtUser.setString(5, user.getJob());
-            if(user.phoneList.size()!=0){
+            if (user.phoneList.size() != 0) {
                 for (int i = 1; i <= user.phoneList.size() * 2; i++) {
                     if (i % 2 == 0) {
                         stmtPhone.setString(i, user.getId());
@@ -63,7 +62,7 @@ public class UserService {
                         stmtPhone.setString(i, user.getPhone());
                     }
                 }
-            }else{
+            } else {
                 stmtPhone.setString(1, user.getId());
                 stmtPhone.setString(2, user.getPhone());
             }
@@ -84,22 +83,16 @@ public class UserService {
     /**
      * 사용자 정보 조회하는 함수
      * 
-     * @param userInfo 조회할 정보
-     * @return 조회 실행 여부
+     * @param userId 조회할 ID
+     * @return 조회 항목 담긴 리스트
      * 
      * @author yblee
      * @since 2023.03.22
      */
-    public List<String> find(String userInfo) {
+    public List<String> find(String userId) {
         List<String> userInfoFindList = new ArrayList<>();
-        // "SELECT * FROM user INNER JOIN phone ON (user.id=phone.user_id) WHERE id = ?
-        // ORDER BY id";
-        StringBuffer userFindInfo = new StringBuffer("SELECT ");
-        if (userInfo.equals("phone")) {
-            userFindInfo.append("phone FROM phone ORDER BY user_id");
-        } else {
-            userFindInfo.append(userInfo).append(" FROM user ORDER BY id");
-        }
+        StringBuffer userFindSql = new StringBuffer(
+                "SELECT * FROM user LEFT OUTER JOIN phone ON (user.id=phone.user_id) WHERE id='").append(userId).append("'");
         try {
             Class.forName(DB_PATH);
         } catch (ClassNotFoundException e) {
@@ -107,10 +100,15 @@ public class UserService {
         }
         try (
                 Connection con = DriverManager.getConnection(DB_URL, DB_ID, DB_PWD);
-                PreparedStatement stmt = con.prepareStatement(userFindInfo.toString());
+                PreparedStatement stmt = con.prepareStatement(userFindSql.toString());
                 ResultSet rs = stmt.executeQuery();) {
             while (rs.next()) {
-                userInfoFindList.add(rs.getString(userInfo));
+                userInfoFindList.add("id :" + rs.getString("id"));
+                userInfoFindList.add("name : " + rs.getString("name"));
+                userInfoFindList.add("birth : " + rs.getString("birth"));
+                userInfoFindList.add("address : " + rs.getString("address"));
+                userInfoFindList.add("job : " + rs.getString("job"));
+                userInfoFindList.add("phone : " + rs.getString("phone"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,6 +118,9 @@ public class UserService {
 
     /**
      * 사용자 정보 수정하는 함수
+     * 
+     * @param userInfoUpdate 수정할 사용자 정보
+     * @return 수정 실행 여부
      * 
      * @author yblee
      * @since 2023.03.22
@@ -154,6 +155,9 @@ public class UserService {
 
     /**
      * 사용자 정보 삭제하는 함수
+     * 
+     * @param user 사용자 정보
+     * @return 삭제 실행 여부
      * 
      * @author yblee
      * @since 2023.03.22
